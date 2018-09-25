@@ -2,45 +2,48 @@ public class Rectangle {
 
     private double length;
     private double height;
-    private double area;
-    private double perimeter;
-    public static int nextID = 1;
+    private static int nextID = 1;
     private int ID;
-    public Rectangle(double valuelength, double valueheight) {
-        length = valuelength;
-        height = valueheight;
-        area = length * height;
-        perimeter = (length * 2) + (height * 2);
+
+    public Rectangle() {
+        length = 0;
+        height = 0;
+    }
+    public Rectangle(double valueLength, double valueHeight) {
+        length = valueLength;
+        height = valueHeight;
         nextID++;
     }
 
-    public void setLength(int newlength) {
-        this.length = newlength;
+    public void setLength(int newLength) {
+        this.length = newLength;
     }
 
-    public double getLength() {
-        return length;
-    }
-
-    public void setHeight(int newheight) {
-        this.height = newheight;
-    }
-
-    public double getHeight() {
-        return height;
+    public void setHeight(int newHeight) {
+        this.height = newHeight;
     }
 
     public double area() {
-        return area;
+        return length * height;
     }
 
     public double perimeter() {
-        return perimeter;
+        return (length * 2) + (height * 2);
     }
 
     public int getRectangleID() {
         ID++;
         return ID;
+    }
+    @Override
+    public String toString() {
+        return "Rectangle with length " + length + " and height " + height;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Rectangle r = (Rectangle) obj;
+        return (this.length == r.length && this.height == r.height);
     }
 }
 
