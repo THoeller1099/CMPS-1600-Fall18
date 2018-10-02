@@ -1,30 +1,35 @@
 public class Square extends Rectangle {
     private double sideLength;
-    public Square() {
-        sideLength = 0;
-    }
 
+    /**
+     * @param s the length of each side of the square
+     */
     public Square(double s) {
         sideLength = s;
+        ++shapeCount;
     }
+
+    /**
+     * @return returns the area of the square by overriding the area method in the Rectangle class
+     */
     @Override
     public double area() {
         return sideLength * sideLength;
     }
 
+    /**
+     * @return returns the perimeter of the square by overriding the perimeter method in the Rectangle class
+     */
     @Override
     public double perimeter() {
         return sideLength * 4;
     }
 
+    /**
+     * @return returns the type of the shape
+     */
     @Override
-    public String toString() {
-        return "Square with side length " + sideLength;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        Square s = (Square) obj;
-        return (this.sideLength == s.sideLength);
+    public String getShape() {
+        return "square";
     }
 }

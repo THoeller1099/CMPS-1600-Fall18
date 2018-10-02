@@ -1,49 +1,43 @@
-public class Rectangle {
-
-    private double length;
+public class Rectangle extends Shape {
+    private double base;
     private double height;
-    private static int nextID = 1;
-    private int ID;
 
+    /**
+     * the default constructor for the subclass Square
+     */
     public Rectangle() {
-        length = 0;
+        base = 0;
         height = 0;
     }
-    public Rectangle(double valueLength, double valueHeight) {
-        length = valueLength;
-        height = valueHeight;
-        nextID++;
+
+    /**
+     * @param b the base length of the rectangle
+     * @param h the height length of the rectangle
+     */
+    public Rectangle(double b, double h) {
+        base = b;
+        height = h;
+        ++shapeCount;
     }
 
-    public void setLength(int newLength) {
-        this.length = newLength;
-    }
-
-    public void setHeight(int newHeight) {
-        this.height = newHeight;
-    }
-
+    /**
+     * @return returns the area of the rectangle
+     */
     public double area() {
-        return length * height;
+        return base * height;
     }
 
+    /**
+     * @return returns the perimeter of the rectangle
+     */
     public double perimeter() {
-        return (length * 2) + (height * 2);
+        return (base * 2) + (height * 2);
     }
 
-    public int getRectangleID() {
-        ID++;
-        return ID;
-    }
-    @Override
-    public String toString() {
-        return "Rectangle with length " + length + " and height " + height;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        Rectangle r = (Rectangle) obj;
-        return (this.length == r.length && this.height == r.height);
+    /**
+     * @return returns the type of the shape in string format
+     */
+    public String getShape() {
+        return "rectangle";
     }
 }
-
