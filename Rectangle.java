@@ -1,4 +1,4 @@
-public class Rectangle extends Shape {
+public class Rectangle {
     private double base;
     private double height;
 
@@ -17,7 +17,6 @@ public class Rectangle extends Shape {
     public Rectangle(double b, double h) {
         base = b;
         height = h;
-        ++shapeCount;
     }
 
     /**
@@ -39,5 +38,4 @@ public class Rectangle extends Shape {
      */
     public String getShape() {
         return "rectangle";
-    }
-}
+    }}
