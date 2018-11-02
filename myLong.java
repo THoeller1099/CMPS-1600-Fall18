@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 
 public class myLong {
-    private ArrayList<Integer> numberList;
-    private String myNum;
+    public ArrayList<Integer> numberList;
+    public String myNum;
 
 
     public myLong() {
@@ -29,26 +29,15 @@ public class myLong {
         return myNum;
     }
 
-    private int size() {
+    public int size() {
         return numberList.size();
     }
 
-    private myLong add(myLong other) {
+    public myLong add(myLong other) {
         myLong newNum = new myLong();
-        if (this.size() != other.size()) {
-            if (this.size() > other.size()) {
-                int zeros = this.size() - other.size();
-                for (int i = 0; i < zeros; i++) {
-                    other.numberList.add(0, 0);
-                }
-            }
-            if (other.size() > this.size()) {
-                int zeros = other.size() - this.size();
-                for (int i = 0; i < zeros; i++) {
-                    this.numberList.add(0, 0);
-                }
-            }
-        }
+
+        this.makeSizeEqual(other);
+
         for (int i = 0; i < this.size(); i++) {
             int num1 = this.numberList.get(numberList.size() - 1 - i);
             int num2 = other.numberList.get(numberList.size() - 1 - i);
@@ -61,8 +50,7 @@ public class myLong {
                 int remainder = addedNum - 10;
                 this.numberList.set(numberList.size() - 2 - i, (this.numberList.get(numberList.size() - 2 - i) + 1));
                 newNum.numberList.add(0, remainder);
-            }
-            else {
+            } else {
                 newNum.numberList.add(0, addedNum);
             }
         }
@@ -70,21 +58,8 @@ public class myLong {
         return newNum;
     }
 
-    private boolean isLarger(myLong other) {
-        if (this.size() != other.size()) {
-            if (this.size() > other.size()) {
-                int zeros = this.size() - other.size();
-                for (int i = 0; i < zeros; i++) {
-                    other.numberList.add(0, 0);
-                }
-            }
-            if (other.size() > this.size()) {
-                int zeros = other.size() - this.size();
-                for (int i = 0; i < zeros; i++) {
-                    this.numberList.add(0, 0);
-                }
-            }
-        }
+    public boolean isLarger(myLong other) {
+        this.makeSizeEqual(other);
 
         for (int i = 0; i < this.size(); i++) {
             if (this.numberList.get(i) > other.numberList.get(i)) {
@@ -96,8 +71,8 @@ public class myLong {
         }
         return false;
     }
-    private myLong subtract(myLong other) {
-        myLong newNum = new myLong();
+
+    public void makeSizeEqual(myLong other) {
         if (this.size() != other.size()) {
             if (this.size() > other.size()) {
                 int zeros = this.size() - other.size();
@@ -112,6 +87,13 @@ public class myLong {
                 }
             }
         }
+    }
+
+    public myLong subtract(myLong other) {
+        myLong newNum = new myLong();
+
+        this.makeSizeEqual(other);
+
         int subtractedNum;
         int num1;
         int num2;
@@ -126,8 +108,7 @@ public class myLong {
                     int addedNum = (this.numberList.get(numberList.size() - 1 - i));
                     int newSubtractedNum = addedNum - other.numberList.get(numberList.size() - 1 - i);
                     newNum.numberList.add(0, newSubtractedNum);
-                }
-                else {
+                } else {
                     newNum.numberList.add(0, subtractedNum);
                 }
             }
@@ -143,8 +124,7 @@ public class myLong {
                     int addedNum = (other.numberList.get(numberList.size() - 1 - i));
                     int newSubtractedNum = addedNum - this.numberList.get(numberList.size() - 1 - i);
                     newNum.numberList.add(0, newSubtractedNum);
-                }
-                else {
+                } else {
                     newNum.numberList.add(0, subtractedNum);
                 }
             }
@@ -153,9 +133,9 @@ public class myLong {
         return newNum;
     }
 
-    private myLong multiply(myLong other) {
+    public myLong multiply(myLong other) {
         myLong newNum = new myLong();
-        myLong result = new myLong();
+
         newNum.setLong("0");
         for (Integer number : other.numberList) {
             int zeros = other.numberList.size() - other.numberList.indexOf(number) - 1;
@@ -176,37 +156,5 @@ public class myLong {
 
         }
         return newNum;
-    }
-
-
-    public static void main(String[] args) {
-	myLong test = new myLong();
-	test.setLong("1234567");
-	System.out.println(test);
-
-	System.out.println("Addition");
-	myLong add1 = new myLong();
-	add1.setLong("9001");
-	myLong add2 = new myLong();
-	add2.setLong("7700");
-	System.out.println(add1.add(add2));
-
-
-	System.out.println("Subtraction");
-	myLong sub1 = new myLong();
-	sub1.setLong("500");
-	myLong sub2 = new myLong();
-	sub2.setLong("480");
-	System.out.println(sub1.subtract(sub2));
-
-	System.out.println("Multiplication");
-	myLong mult1 = new myLong();
-	mult1.setLong("123456789");
-	myLong mult2 = new myLong();
-	mult2.setLong("987654321");
-	myLong result = mult1.multiply(mult2);
-	System.out.println(result);
-
-
     }
 }

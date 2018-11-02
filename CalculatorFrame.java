@@ -1,8 +1,72 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 
 public class CalculatorFrame extends JFrame {
+
+    private Deque<String> queue = new ArrayDeque<>();
+    private void Calculate(String expression) {
+        for (int i = 0; i < expression.length(); i++) {
+            if (expression.charAt(i) == '(') {
+                String parenthesis = "";
+                for (int j = i + 1; j < expression.length(); j++) {
+                    if (expression.charAt(j) == '(') {
+                        Calculate(expression);
+                    }
+                    if (expression.charAt(j) == ')') {
+                        parenthesis = expression.substring(i + 1, j);
+                        break;
+                    }
+                }
+                queue.offer(parenthesis);
+            }
+        }
+
+        if (!expression.contains("(")) {
+            queue.offer(expression);
+        }
+        String operation = "";
+        operation = queue.poll();
+
+        if (operation != null && operation.contains("(")) {
+            Calculate(operation);
+        }
+        String numS1 = "";
+        String numS2 = "";
+        for (int x = 0; x < operation.length(); x++) {
+            if (operation.charAt(x) == 'x' || operation.charAt(x) == '-' || operation.charAt(x) == '+') {
+                numS1 = operation.substring(0, x);
+                numS2 = operation.substring(x + 1, operation.length());
+                break;
+            }
+
+        }
+        myLong num1 = new myLong();
+        myLong num2 = new myLong();
+        myLong finNum;
+        num1.setLong(numS1);
+        num2.setLong(numS2);
+
+        if (operation.contains("x")) {
+            finNum = num1.multiply(num2);
+            System.out.println(finNum);
+            calcField.setText(finNum.myNum);
+        }
+        if (operation.contains("+")) {
+            finNum = num1.add(num2);
+            System.out.println(finNum);
+            calcField.setText(finNum.myNum);
+        }
+
+        if (operation.contains("-")) {
+            finNum = num1.subtract(num2);
+            System.out.println(finNum);
+            calcField.setText(finNum.myNum);
+        }
+    }
+
     private JTextField calcField;
 
     private CalculatorFrame() {
@@ -68,7 +132,8 @@ public class CalculatorFrame extends JFrame {
                 myStack calc = new myStack(calculation.length());
                 boolean Valid = calc.isValidInput(calculation);
                 if (Valid) {
-                    calcField.setText("Valid Input");
+                    Calculate(calculation);
+
                 }
 
                 if (!Valid) {
@@ -193,7 +258,6 @@ public class CalculatorFrame extends JFrame {
         }
 
     public class myStack {
-
         ArrayList<Integer> STACK = new ArrayList<>();
         int i;
 
@@ -203,22 +267,14 @@ public class CalculatorFrame extends JFrame {
 
 
         private void push(Integer a) {
-
             STACK.add(a);
             ++i;
-
         }
 
         private Integer pop() {
-
-
             Integer r = STACK.get(STACK.size() - 1);
-
             STACK.remove(STACK.get(STACK.size() - 1));
-
             return r;
-
-
         }
 
         private boolean isValidInput(String input) {
@@ -232,13 +288,11 @@ public class CalculatorFrame extends JFrame {
                     rightPStack.push(i);
             }
 
-            while (leftPStack.STACK.size() > 0) {
-                try {
-                    if (leftPStack.pop() > rightPStack.pop())
-                        return false;
-                } catch (Exception wrongLength) {
+            while (leftPStack.STACK.size() > 0) try {
+                if (leftPStack.pop() > rightPStack.pop())
                     return false;
-                }
+            } catch (Exception wrongLength) {
+                return false;
             }
 
             while (rightPStack.STACK.size() > 0) {
@@ -250,45 +304,29 @@ public class CalculatorFrame extends JFrame {
                 }
             }
 
+            if (input.contains("++")) { return false; }
+            if (input.contains("--")) { return false; }
+            if (input.contains("xx")) { return false; }
+            if (input.contains("+-")) { return false; }
+            if (input.contains("+x")) { return false; }
+            if (input.contains("-+")) { return false; }
+            if (input.contains("-x")) { return false; }
+            if (input.contains("x+")) { return false; }
+            if (input.contains("x-")) { return false; }
+            if (input.contains("(+")) { return false; }
+            if (input.contains("(-")) { return false; }
+            if (input.contains("(x")) { return false; }
+            if (input.contains("+)")) { return false; }
+            if (input.contains("-)")) { return false; }
+            if (input.contains("x)")) { return false; }
+            if (input.contains("()")) { return false; }
+            if (input.startsWith("+")) { return false; }
+            if (input.startsWith("-")) { return false; }
+            if (input.startsWith("x")) { return false; }
+            if (input.endsWith("+")) { return false; }
+            if (input.endsWith("-")) { return false; }
+            if (input.endsWith("x")) { return false; }
 
-            if (input.contains("++")) {
-                return false;
-            }
-            if (input.contains("--")) {
-                return false;
-            }
-
-            if (input.contains("xx")) {
-                return false;
-            }
-
-            if (input.contains("(+")) {
-                return false;
-            }
-
-            if (input.contains("(-")) {
-                return false;
-            }
-
-            if (input.contains("(x")) {
-                return false;
-            }
-
-            if (input.contains("+)")) {
-                return false;
-            }
-
-            if (input.contains("-)")) {
-                return false;
-            }
-
-            if (input.contains("x)")) {
-                return false;
-            }
-
-            if (input.length() == 2) {
-                return false;
-            }
 
             return true;
         }
