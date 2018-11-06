@@ -1,43 +1,35 @@
 #include <stdio.h>
 #include <stdlib.h>
-/*The * operator can also be read as "the contents of" whatever it is next to.
- * The & operator can be put in front of a variable that you want to store something in
- */
-struct Node {
-    int data;
-    struct Node *next;
-};
 
-void add(struct Node** new_head, int data) {
+struct distance {
+    int feet;
+    float inches;
+} dist_sum, dist1, dist2;
 
-    struct Node* new = (struct Node*)malloc(sizeof(struct Node));
+void addDistance(struct distance dist1, struct distance dist2) {
+    dist_sum.feet = dist1.feet + dist2.feet;
+    dist_sum.inches = dist1.inches + dist2.inches;
 
-    new->data = data;
-    new->next = *new_head;
-    *new_head = new;
+    while (dist_sum.inches >= 12) {
+        dist_sum.feet++;
+        dist_sum.inches = dist_sum.inches - 12;
+    }
+
+    printf("Sum of Distances = %d' - %f'' ", dist_sum.feet, dist_sum.inches);
 }
-
-void deleteHead(struct Node **new_head) {
-    //Created a new Node based on the
-    struct Node* temp = *new_head;
-    *new_head = temp->next;
-    free(temp);
-}
-
-
-
-
 int main() {
-    struct Node* first = NULL;
-    struct Node* second = NULL;
+    printf("1st Distance\n");
+    printf("Enter feet: ");
+    scanf("%d", &dist1.feet);
+    printf("\nEnter Inches: ");
+    scanf("%f", &dist1.inches);
 
-    first = (struct Node*)malloc(sizeof(struct Node));
-    first->data = 1;
-    first->next = NULL;
+    printf("2nd Distance\n");
+    printf("Enter feet: ");
+    scanf("%d", &dist2.feet);
+    printf("\nEnter Inches: ");
+    scanf("%f", &dist2.inches);
 
-    second = (struct Node*)malloc(sizeof(struct Node));
-    second->data = 2;
-    second->next = first;
-
+    addDistance(dist1, dist2);
     return 0;
 }
