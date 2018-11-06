@@ -1,55 +1,43 @@
 #include <stdio.h>
+#include <stdlib.h>
+/*The * operator can also be read as "the contents of" whatever it is next to.
+ * The & operator can be put in front of a variable that you want to store something in
+ */
+struct Node {
+    int data;
+    struct Node *next;
+};
 
-typedef int bool;
-#define true 1;
-#define false 0;
+void add(struct Node** new_head, int data) {
 
-int ask_in_range(int min, int max) {
-    int number;
-    bool validNum = false;
-    while (!validNum) {
-        printf("Please enter a number: \n");
-        scanf("%d", &number);
+    struct Node* new = (struct Node*)malloc(sizeof(struct Node));
 
-        if (number > max || number < min) {
-            printf("Your number is outside of [%d, %d] range.", min, max);
-            printf("Please enter a number: \n");
-            scanf("%d", &number);
-        }
-        else {
-            validNum = true;
-            return number;
-        }
-    }
-    }
-int guessing_game(int num, int rangemin, int rangemax) {
-    printf("Hello and welcome to the game.\n");
-    printf("You need to guess a number between %d and %d\n", rangemin, rangemax);
-    bool guessed = false;
-    int num_guesses = 1;
-    while (!guessed) {
-    int number = ask_in_range(rangemin, rangemax);
-    if (number > num) {
-        printf("Too High!\n");
-        num_guesses = num_guesses + 1;
-    }
-    if (number < num) {
-        printf("Too Low!\n");
-        num_guesses = num_guesses + 1;
-    }
-    if (number == num) {
-        if (num_guesses == 1) {
-            printf("Good Job! You took %d guess.", num_guesses);
-        }
-        else {
-            printf("Good Job! You took %d guesses.", num_guesses);
-            guessed = true;
-        }
-    }
-    }
-    }
+    new->data = data;
+    new->next = *new_head;
+    *new_head = new;
+}
+
+void deleteHead(struct Node **new_head) {
+    //Created a new Node based on the
+    struct Node* temp = *new_head;
+    *new_head = temp->next;
+    free(temp);
+}
+
+
+
 
 int main() {
-guessing_game(50, -100, 100);
+    struct Node* first = NULL;
+    struct Node* second = NULL;
+
+    first = (struct Node*)malloc(sizeof(struct Node));
+    first->data = 1;
+    first->next = NULL;
+
+    second = (struct Node*)malloc(sizeof(struct Node));
+    second->data = 2;
+    second->next = first;
+
     return 0;
 }
