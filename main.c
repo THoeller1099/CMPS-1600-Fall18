@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <memory.h>
 
 struct Node** head_ref;
 struct connection** head_con;
@@ -204,8 +205,66 @@ void getFriends(char* email) {
 
 }
 
-//Using late card for saveNetwork and retrieveNetwork
+int saveNetwork(char* peopleFilename, char* connectionsFilename) {
+    FILE* outFile = NULL;
+    FILE* connFile = NULL;
 
+    outFile = fopen(peopleFilename, "w");
+
+    if (outFile == NULL) {
+        printf("Can't open file.");
+        return -1;
+    }
+    temp = *head_ref;
+    while (temp != NULL) {
+        fprintf(outFile, temp->this_person->name);
+        fprintf(outFile, ", ");
+        fprintf(outFile, temp->this_person->email);
+        fprintf(outFile, ", ");
+        char age[30];
+        sprintf(age, "%d", temp->this_person->age);
+        fprintf(outFile, age);
+        fprintf(outFile, ", ");
+        fprintf(outFile, temp->this_person->hometown);
+        fprintf(outFile, ", ");
+        fprintf(outFile, temp->this_person->hobby);
+        fprintf(outFile, "\n");
+
+        temp = temp->next;
+    }
+    fclose(outFile);
+
+    connFile = fopen(connectionsFilename, "w");
+
+    if (connFile == NULL) {
+        printf("Can't open file.");
+        return -1;
+    }
+    temp2 = *head_con;
+    while (temp2 != NULL) {
+        fprintf(connFile, temp2->person1->email);
+        fprintf(connFile, ", ");
+        fprintf(connFile, temp2->person2->email);
+        fprintf(connFile, "\n");
+
+        temp2 = temp2->next;
+    }
+    fclose(connFile);
+    return 0;
+
+}
+/*
+int retrieveNetwork(char* peopleFilename, char* connectionsFilename) {
+    FILE* inFile = NULL;
+
+    inFile = fopen(peopleFilename, "r");
+
+    if (inFile == NULL) {
+        printf("Could not open file.");
+        return -1;
+    }
+
+}*/
 int main() {
 char *choice = "";
 
@@ -218,6 +277,7 @@ while (*choice != 'q') {
     printf("d - display all people\n");
     printf("s - disconnect two people\n");
     printf("g - display direct neighbors of a person");
+    printf("v - save programs to a file");
     printf("q - quit program\n");
     printf("Select an action: \n");
     scanf("%c", choice);
@@ -273,11 +333,19 @@ while (*choice != 'q') {
         scanf("%c", email);
         getFriends(email);
     }
-    
+
+    if (*choice == 'v') {
+        printf("Enter the file you would like to save people to.");
+        char *file = "";
+        scanf("%c", file);
+        printf("Enter the file you would like to save the connections to.");
+        char *file2 = "";
+        scanf("%c", file2);
+        saveNetwork(file, file2);
+    }
     if (*choice == 'q') {
         break;
     }
-
 }
 
     return 0;
