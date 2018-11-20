@@ -15,7 +15,7 @@ struct connection {
     struct person* person1;
     struct person* person2;
     struct connection* next;
-};
+}*temp2;
 
 struct Node {
     struct person* this_person;
@@ -146,6 +146,66 @@ void connect(char* email1, char* email2) {
     *head_con = new_connection;
 
 }
+
+void display() {
+
+    temp = *head_ref;
+    temp2 = *head_con;
+    while (temp!= NULL) {
+
+        printf(temp->this_person->name);
+        printf("\n");
+        printf("{\n");
+        while (temp2 != NULL) {
+            if (temp2->person1 == temp->this_person) {
+                printf(temp2->person2->name);
+                printf("\n");
+            }
+            if (temp2->person2 == temp->this_person) {
+                printf(temp2->person1->name);
+                printf("\n");
+            }
+            temp2 = temp2->next;
+        }
+        printf("}");
+    }
+}
+
+void disconnect(char* email1, char*email2) {
+    temp2 = *head_con;
+    while (temp2 != NULL) {
+        if (temp2->person1->email == email1) {
+            if (temp2->person2->email == email2) {
+                temp2->person1 = NULL;
+                temp2->person2 = NULL;
+            }
+        }
+    }
+}
+
+void getFriends(char* email) {
+    struct Node* specified = (struct Node*)malloc(sizeof(struct Node));
+    struct Node* before = (struct Node*)malloc(sizeof(struct Node));
+    temp = *head_ref;
+    while (temp != NULL) {
+        if (temp->this_person->email == email) {
+            specified = temp;
+
+        }
+        else {
+            before = temp;
+            temp = temp->next;
+        }
+    }
+    printf(before->next->this_person->name);
+    printf("\n");
+    printf(specified->next->this_person->name);
+    printf("\n");
+
+}
+
+//Using late card for saveNetwork and retrieveNetwork
+
 int main() {
 char *choice = "";
 
@@ -155,6 +215,9 @@ while (*choice != 'q') {
     printf("r - remove Person\n");
     printf("e - edit existing Person\n");
     printf("c - connect two people\n");
+    printf("d - display all people\n");
+    printf("s - disconnect two people\n");
+    printf("g - display direct neighbors of a person");
     printf("q - quit program\n");
     printf("Select an action: \n");
     scanf("%c", choice);
@@ -190,10 +253,32 @@ while (*choice != 'q') {
         connect(email1, email2);
     }
 
+    if (*choice == 'd') {
+        display();
+    }
+
+    if (*choice == 's') {
+        printf("Enter the email of the 1st person you would like to disconnect\n");
+        char *email1 = "";
+        scanf("%c", email1);
+        printf("Enter the email of the 2nd person you would like to disconnect\n");
+        char *email2 = "";
+        scanf("%c", email2);
+        disconnect(email1, email2);
+    }
+
+    if (*choice == 'g') {
+        printf("Enter the email of the person whose friends you would like to display\n");
+        char *email = "";
+        scanf("%c", email);
+        getFriends(email);
+    }
+    
     if (*choice == 'q') {
         break;
     }
 
 }
+
     return 0;
 }
